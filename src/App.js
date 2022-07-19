@@ -17,13 +17,13 @@ const App = (props) => {
     const noteObject = {
       content: newNote,
       date: new Date().toISOString(),
-      important: Math.random() < 0.5,
-      id: notes.length + 1,
+      important: Math.random() > 0.5
     }
+
     noteService
       .create(noteObject)
-      .then(response => {
-        setNotes(notes.concat(response.data))
+      .then(returnedNote => {
+        setNotes(notes.concat(returnedNote))
         setNewNote('')
       })
   }
@@ -35,16 +35,22 @@ const App = (props) => {
 
     noteService
       .update(id, changedNote)
-      .then(response => {
-        setNotes(notes.map(note => note.id !== id ? note : response.data))
+      .then(returnedNote => {
+        setNotes(notes.map(note => note.id !== id ? note : returnedNote))
+      })
+      .catch(error => {
+        alert(
+          `the note '${note.content}' was already deleted from server`
+        )
+        setNotes(notes.filter(n => n.id !== id))
       })
   }
 
   useEffect(() => {
     noteService
       .getAll()
-      .then(response => {
-        setNotes(response.data)
+      .then(initialNotes => {
+        setNotes(initialNotes)
       })
   }, [])
 

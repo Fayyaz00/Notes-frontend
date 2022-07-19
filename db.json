@@ -7,7 +7,7 @@
       "id": 1,
       "content": "HTML is easy",
       "date": "2022-1-17T17:30:31.098Z",
-      "important": true
+      "important": false
     },
     {
       "id": 2,
@@ -24,13 +24,13 @@
     {
       "content": "catz",
       "date": "2022-07-19T04:40:00.354Z",
-      "important": false,
+      "important": true,
       "id": 4
     },
     {
       "content": "ratz",
       "date": "2022-07-19T04:44:09.092Z",
-      "important": false,
+      "important": true,
       "id": 5
     },
     {
@@ -42,7 +42,7 @@
     {
       "content": "snakez",
       "date": "2022-07-19T05:04:09.983Z",
-      "important": false,
+      "important": true,
       "id": 7
     }
   ]

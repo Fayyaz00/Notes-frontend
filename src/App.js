@@ -1,19 +1,49 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 
 const App = (props) => {
 
-  const { notes } = props
+  // const { notes } = props
+
+  const [notes, setNotes] = useState(props.notes)
+  const [newNote, setNewNote] = useState("catz")
+  const [showAll, setShowAll] = useState(true)
+
+  const addNote = (event) => {
+    event.preventDefault()
+    const noteObject = {
+      content: newNote,
+      date: new Date().toISOString(),
+      important: Math.random() < 0.5,
+      id: notes.length + 1,
+    }
+
+    setNotes(notes.concat(noteObject))
+    setNewNote('')
+  }
+
+  const notesToShow = showAll ? notes : notes.filter(note => note.important === true)
+
+  const handleNoteChange = (event) => {
+    console.log(event.target.value)
+    setNewNote(event.target.value)
+  }
 
   return (
     <div className="App">
-      <h1>Catz</h1>
-      <Animal animal={"cat"} />
-
       <h1>Notes</h1>
+      <div>
+        <button onClick={() => setShowAll(!showAll)}>
+          show {showAll ? 'important' : 'all'}
+        </button>
+      </div>
       <ul>
-        {notes.map(note => <Note key={note.id} note={note} />)}
+        {notesToShow.map(note => <Note key={note.id} note={note} />)}
       </ul>
+      <form onSubmit={addNote}>
+        <input value={newNote} onChange={handleNoteChange} />
+        <button type="submit">save</button>
+      </form>
 
     </div>
   )
@@ -22,25 +52,10 @@ const App = (props) => {
 const Note = (props) => {
   const { note } = props
 
-  console.log("note", note);
+  // console.log("note", note);
 
   return (
     <li>{note.content}</li>
-  )
-}
-
-const Animal = (props) => {
-  const { animal } = props
-
-  useEffect(() => {
-    console.log(props);
-  }, [props])
-
-
-  return (
-    <div>
-      <h1>I'm a {animal}</h1>
-    </div>
   )
 }
 

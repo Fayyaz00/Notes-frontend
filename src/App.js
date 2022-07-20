@@ -34,7 +34,7 @@ const App = (props) => {
     const changedNote = { ...note, important: !note.important }
 
     noteService
-      .update(id, changedNote)
+      .updateImportance(id, changedNote)
       .then(returnedNote => {
         setNotes(notes.map(note => note.id !== id ? note : returnedNote))
       })
@@ -44,6 +44,24 @@ const App = (props) => {
         )
         setNotes(notes.filter(n => n.id !== id))
       })
+  }
+
+  const deleteNote = (id) => {
+    console.log("need to delete Note");
+
+    const changedNotes = notes.filter(note => note.id !== id)
+
+    setNotes(changedNotes)
+
+    noteService
+      .deleteNote(id)
+      .then((returnedNotes) => {
+        // setNotes(returnedNotes)
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+
   }
 
   useEffect(() => {
@@ -72,7 +90,7 @@ const App = (props) => {
       <ul>
         {notesToShow.map(
           note =>
-            <Note key={note.id} note={note} toggleImportance={() => { toggleImportance(note.id) }} />
+            <Note key={note.id} note={note} toggleImportance={() => { toggleImportance(note.id) }} deleteNote={() => { deleteNote(note.id) }} />
         )}
       </ul>
       <form onSubmit={addNote}>
@@ -85,7 +103,7 @@ const App = (props) => {
 }
 
 const Note = (props) => {
-  const { note, toggleImportance } = props
+  const { note, toggleImportance, deleteNote } = props
 
   const label = note.important ? "make not important" : "make important"
 
@@ -95,6 +113,7 @@ const Note = (props) => {
     <li>
       {note.content}
       <button onClick={toggleImportance}>{label}</button>
+      <button onClick={deleteNote}>Delete</button>
 
     </li>
   )
